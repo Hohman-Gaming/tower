@@ -33,3 +33,4 @@ Environment setup notes
 
 7. Open eclipse - import the gradle project for tower
 
+8. Install the tile editor used for creating maps from http://www.mapeditor.org/download.html
