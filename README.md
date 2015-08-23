@@ -17,6 +17,8 @@ Environment setup notes
 3. Test git command line - open a command prompt
 	git (press enter - should see help)
 
+3.5 Install github gui from github https://desktop.github.com/
+
 4. Configure git command line
 	git config --global user.email "you@example.com"
 	git config --global user.name "Your Name"
