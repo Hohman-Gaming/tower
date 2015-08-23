@@ -5,7 +5,8 @@ Environment setup notes
 1. Install eclipse 64-bit from eclipse.org - I am using Version: Mars Release (4.5.0), 64-bit
 	Download here: https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/mars/R/eclipse-jee-mars-R-win32-x86_64.zip
 
-2. Install github for your operating system - IF YOU ARE ON WINDOWS follow these instructions in detail
+2. Install git for your operating system - IF YOU ARE ON WINDOWS follow these instructions in detail
+	Install from https://git-scm.com/download/win
 	Hit Next on welcome screen
 	Next on license screen
 	Next on Select Components (default is ok)
