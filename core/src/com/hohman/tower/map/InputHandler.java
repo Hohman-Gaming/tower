@@ -5,12 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.hohman.tower.screens.GameScreen;
 
-public class TDInputHandler {
+public class InputHandler {
 
 	protected TDMap map = null;
 	protected boolean mouseWasUp = true;
 	
-	public TDInputHandler(TDMap map) {
+	public InputHandler(TDMap map) {
 		this.map = map;
 	}
 	

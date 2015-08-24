@@ -3,19 +3,27 @@ package com.hohman.tower.map;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.hohman.tower.entity.EntityBase;
 import com.hohman.tower.entity.EntityEnemy;
-import com.hohman.tower.entity.EntityTower;
+import com.hohman.tower.entity.towers.EntityBaseTower;
+import com.hohman.tower.entity.towers.SimpleTower;
+import com.hohman.tower.screens.BaseScreen;
 
 public abstract class TDMap  {
 
 	public final static int CELL_DX=32;
 	public final static int CELL_DY=32;
+	
+	public final static int MAP_DX=26;
+	public final static int MAP_DY=24;
 	
 	public TiledMap tiledMap = null;
 	protected Vector2 startingPosition = null;
@@ -28,13 +36,23 @@ public abstract class TDMap  {
 	
 	protected float lastSpawnTime = 0; 
 
+	// rendering stuff
+	protected OrthogonalTiledMapRenderer renderer = null;
+	protected OrthographicCamera cam = new OrthographicCamera();
+	protected SpriteBatch batch = new SpriteBatch(5460);
+	
+	
 	public TDMap() {
 	}
 	
 	protected abstract boolean stillSpawning();
 	protected abstract float getSpawnRate();
 	protected abstract EntityEnemy spawnEntity(Vector2 pos);
+	protected abstract List<EntityBaseTower> getTowersAvailable();
 	
+	/*
+	 * LOADS a map from a file created with the map editor (can't remember the name)
+	 */
 	public void load(String mapName) {
 		tiledMap = new TmxMapLoader().load(mapName);
 		cellInfoMap = new CellInfo[getMapWidth()][getMapHeight()];
@@ -59,8 +77,39 @@ public abstract class TDMap  {
 			}
 
 		startingPosition = new Vector2(startX, startY);
+
+		// setup the camera and renderer
+		cam.setToOrtho(false, BaseScreen.SCREEN_PIXELS_DX/CELL_DX, BaseScreen.SCREEN_PIXELS_DY/CELL_DY);
+		float unitScale = 1 / (float)CELL_DX;
+		renderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale);
+		
 	}
-	
+
+	/*
+	 * renders the map to the screen.
+	 */
+	public void render() {
+		cam.position.set(cam.viewportWidth/2, cam.viewportHeight/2, 0);  // centered on the viewport
+		this.cam.update();
+
+		// make the tile renderer paint the underlying tiles...
+		renderer.setView(cam);
+		renderer.render();
+
+		// paint each entity
+		batch.setProjectionMatrix(cam.combined);
+		batch.begin();
+
+		for(EntityBase entity : entities) {
+			entity.render(batch);
+		}
+		
+		batch.end();
+	}
+
+	/*
+	 * On each game tick, this updates all the things on the map - their position, etc...
+	 */
 	public void update(float delta) {
 		gametime += delta;
 		updating = true;
@@ -104,7 +153,7 @@ public abstract class TDMap  {
 		if (canPutTowerHere(mouseCoords)) {
 			// create a new tower here!
 			Vector2 indexes = TDMap.screen2CellIndexes(mouseCoords);
-			EntityTower tower = new EntityTower(indexes, .2f, 3);
+			EntityBaseTower tower = new SimpleTower(indexes, .2f, 3);
 			addEntity(tower);
 			CellInfo cellInfo = getCellInfoAtIndexes(indexes);
 			cellInfo.tower = tower;

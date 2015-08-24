@@ -1,11 +1,14 @@
-package com.hohman.tower.entity;
+package com.hohman.tower.entity.towers;
 
 import com.badlogic.gdx.math.Vector2;
+import com.hohman.tower.entity.EntityBase;
+import com.hohman.tower.entity.EntityEnemy;
+import com.hohman.tower.entity.EntitySimpleSprite;
 import com.hohman.tower.entity.ammo.AmmoSausage;
 import com.hohman.tower.map.TDMap;
 
 
-public class EntityTower extends EntitySimpleSprite {
+public abstract class EntityBaseTower extends EntitySimpleSprite {
 
 	protected EntityEnemy target = null; // our current target
 	protected float lastFireTime = 0f;
@@ -13,8 +16,8 @@ public class EntityTower extends EntitySimpleSprite {
 	protected float shotLength = .5f;
 	protected float range = 1f;
 	
-	public EntityTower(Vector2 pos, float secondsBetweenShots, float range) {
-		super("towers/tower.png", 32, 32, 0, 0, pos, new Vector2(0,0));
+	public EntityBaseTower(String spriteAssetName, Vector2 pos, float secondsBetweenShots, float range) {
+		super(spriteAssetName, 32, 32, 0, 0, pos, new Vector2(0,0));
 		this.secondsBetweenShots = secondsBetweenShots; 
 		this.range = range;
 	}

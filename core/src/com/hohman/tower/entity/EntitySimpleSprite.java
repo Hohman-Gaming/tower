@@ -28,4 +28,8 @@ public class EntitySimpleSprite extends EntityBase {
 		batch.draw(textureRegion, pos.x, pos.y, 1, 1);
 	}
 	
+	public TextureRegion getTextureRegion() {
+		return textureRegion;
+	}
+	
 }

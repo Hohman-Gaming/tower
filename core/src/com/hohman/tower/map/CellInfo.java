@@ -1,8 +1,8 @@
 package com.hohman.tower.map;
 
-import com.hohman.tower.entity.EntityTower;
+import com.hohman.tower.entity.towers.EntityBaseTower;
 
 public class CellInfo {
 
-	public EntityTower tower = null;
+	public EntityBaseTower tower = null;
 }
